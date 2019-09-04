@@ -1,6 +1,8 @@
 FROM bash:latest
 
-RUN addgroup -S devops && adduser -S devops -G devops && mkdir -p /home/devops \
+ARG DEVOPS_UID=1000
+
+RUN addgroup -S devops && adduser -u ${DEVOPS_UID} -S devops -G devops && mkdir -p /home/devops \
     && apk add --no-cache curl wget jq git python docker openssh
 
 RUN K8S_VER=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt` \
