@@ -1,7 +1,7 @@
 FROM bash:latest
 
 RUN addgroup -S devops && adduser -S devops -G devops && mkdir -p /home/devops \
-    && apk add --no-cache curl wget jq git python docker
+    && apk add --no-cache curl wget jq git python docker openssh
 
 RUN K8S_VER=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt` \
     && curl -L https://storage.googleapis.com/kubernetes-release/release/${K8S_VER}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl \
@@ -16,5 +16,4 @@ RUN URL=https://dl.google.com/dl/cloudsdk/channels/rapid/install_google_cloud_sd
     && CLOUDSDK_INSTALL_DIR=/home/devops \
     && curl -sSL https://dl.google.com/dl/cloudsdk/channels/rapid/install_google_cloud_sdk.bash | sed 's|/bin/bash|/usr/local/bin/bash|g' | bash
 
-CMD "/usr/local/bin/bash"
-# TODO: source .bash_profile
+CMD ["/usr/local/bin/bash", "-l"]
